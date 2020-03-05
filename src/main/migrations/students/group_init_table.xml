@@ -1,0 +1,58 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="group_init"
+               author="abuseridze"
+               logicalFilePath="students/group_init_table.xml">
+
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="group" schemaName="public"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="group"
+                     schemaName="public">
+
+            <column name="group_id"
+                    type="int"
+                    autoIncrement="true">
+                <constraints nullable="false"
+                primaryKey="true"
+                unique="true"/>
+            </column>
+
+
+            <column name="name"
+                    type="varchar">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="department"
+                    type="varchar">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="curator_idg"
+                    type="int">
+                <constraints nullable="false"
+                             foreignKeyName="curator_fk"
+                            references="curator(curator_id)"
+                />
+            </column>
+
+        </createTable>
+        <rollback>
+        </rollback>
+
+    </changeSet>
+
+    <changeSet id="curator_fk" author="abuseridze">
+
+        <addForeignKeyConstraint baseTableName="curator_id" baseColumnNames="group" constraintName="curator_fk"
+                                 referencedTableName="curator"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+</databaseChangeLog>

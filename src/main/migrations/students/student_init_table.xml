@@ -1,0 +1,61 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="student_init"
+               author="abuseridze"
+               logicalFilePath="students/student_init_table.xml">
+
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="student" schemaName="public"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="student"
+                     schemaName="public">
+
+            <column name="student_id"
+                    type="int"
+                    autoIncrement="true">
+                <constraints nullable="false"
+                             primaryKey="true"
+                             unique="true"/>
+            </column>
+
+
+            <column name="name"
+                    type="varchar">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="group_ids"
+                    type="int">
+                <constraints nullable="false"
+                             foreignKeyName="group_fk"
+                             references="group(group_id)"/>
+            </column>
+
+            <column name="averageMark"
+                    type="varchar">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="curator_ids"
+                    type="int">
+                <constraints nullable="false"
+                             foreignKeyName="curator_fks"
+                             references="curator(curator_id)"/>
+            </column>
+
+        </createTable>
+
+        <rollback>
+        </rollback>
+
+    </changeSet>
+
+
+
+</databaseChangeLog>
